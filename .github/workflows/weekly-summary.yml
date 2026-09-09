@@ -1,0 +1,39 @@
+name: Weekly Progress Summary
+
+on:
+  schedule:
+    - cron: '0 10 * * 5'   # every Friday, 10:00 UTC — adjust to your timezone
+  workflow_dispatch: {}     # allow manual trigger too
+
+jobs:
+  summarize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Gather merged PRs and closed issues (last 7 days)
+        id: gather
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SINCE=$(date -d '7 days ago' +%Y-%m-%d)
+          gh pr list --state merged --search "merged:>=$SINCE" \
+            --json title,number,author,mergedAt > merged_prs.json
+          gh issue list --state closed --search "closed:>=$SINCE" \
+            --json title,number,closedAt > closed_issues.json
+
+      # NOTE: this step is a placeholder — plug in your Anthropic API key as a
+      # repo secret (ANTHROPIC_API_KEY) and call /v1/messages with the two
+      # JSON files as context to draft the summary. Kept as a manual step for
+      # Sprint 1 since it also doubles as a good "first AI feature" to build
+      # in Week 4 rather than wire up blind in Week 3.
+      - name: Placeholder — generate summary
+        run: |
+          echo "TODO: call Claude/OpenAI API with merged_prs.json + closed_issues.json"
+          echo "and post the result to Slack/Notion."
+
+      - name: Upload raw data as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-summary-source-${{ github.run_id }}
+          path: |
+            merged_prs.json
+            closed_issues.json

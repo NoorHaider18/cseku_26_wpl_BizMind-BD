@@ -1,53 +1,51 @@
-# Contribution Guidelines
+# Contributing to BizMind BD
 
-## 1. Branching
+## Branch strategy
 
-The `main` branch will contain stable project code.
+- `main` — production-ready, protected. No direct pushes.
+- `develop` — integration branch, protected. All feature branches merge here first.
+- `feature/<module>-<short-desc>` — e.g. `feature/auth-login`, `feature/nav-sidebar`
+- `fix/<short-desc>` — bug fixes
+- `chore/<short-desc>` — tooling, config, non-feature work
 
-Each team member should create a separate branch for their work.
+Branch protection (set on GitHub for `main` and `develop`):
+- Require at least 1 PR approval (2 for anything touching `backend/src/auth/**`)
+- Require CI checks to pass before merge
+- No force-push
 
-Example:
+## Commit messages
 
-- feature/authentication
-- feature/inventory
-- feature/supplier
-- feature/ai-demand
-- feature/mobile
+[Conventional Commits](https://www.conventionalcommits.org/):
+```
+feat: add login endpoint
+fix: correct reorder_level comparison in inventory service
+test: add unit tests for auth.service
+docs: update README setup steps
+chore: bump nestjs/mapped-types
+```
 
-## 2. Commit Messages
+## Coding conventions
 
-Use clear and meaningful commit messages.
+- **Backend**: one module per ER entity (`users`, `products`, `inventory`, `sales`, `suppliers`, `procurement`, `expenses`) — controller/service/dto/entity per module, matching what's already scaffolded.
+- **Frontend**: one page per screen in `src/pages/`, shared UI in `src/components/`, no page-specific styling leaking into shared components.
+- **Mobile**: one screen per file in `lib/screens/`, shared widgets in `lib/widgets/`.
+- Run the linter before pushing: `npm run lint` (backend/frontend) or `flutter analyze` (mobile).
 
-Examples:
+## AI-assisted workflow (GitHub Copilot)
 
-- Add user authentication
-- Add inventory module
-- Implement demand forecasting
-- Create supplier management API
-- Add mobile login screen
+- Use Copilot for scaffolding boilerplate (DTOs, CRUD controllers, repetitive test cases) — write a clear function signature + one-line comment first so suggestions are on-target.
+- **Always read and adjust Copilot output before committing** — this applies doubly to anything in `auth/` (password hashing, token handling).
+- After finishing a function/endpoint, prompt your AI assistant to generate unit tests covering edge cases, then review and trim/adjust — don't commit generated tests unread.
+- Every PR description should note whether it was AI-assisted (see PR template).
 
-## 3. Pull Requests
+## Pull Request process
 
-Team members should create a Pull Request before merging major
-features into the main branch.
+1. Branch off `develop`.
+2. Open a PR early (draft is fine) using the template in `.github/PULL_REQUEST_TEMPLATE.md`.
+3. Ensure CI (lint + test) passes.
+4. Request review — minimum 1 approval (2 for auth-related changes).
+5. Squash-merge into `develop` once approved.
 
-Another team member should review the changes when possible.
+## Weekly progress summaries
 
-## 4. Security
-
-Do NOT upload:
-
-- API keys
-- Passwords
-- Database credentials
-- `.env` files
-- Private authentication tokens
-
-## 5. Documentation
-
-Important changes to the system should be documented.
-
-## 6. Team Responsibility
-
-Each member is responsible for maintaining meaningful contributions
-to their assigned module.
+At the end of each sprint week, generate a summary from merged PRs + closed issues (via the GitHub API) and feed it to an AI assistant for a stakeholder-readable write-up. See `.github/workflows/weekly-summary.yml` for the automated version.

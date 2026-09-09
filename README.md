@@ -1,234 +1,65 @@
 # BizMind BD
 
-## AI-Powered SME Commerce, Procurement & Business Intelligence Platform
+SME commerce, procurement, and business-intelligence platform for Bangladesh — inventory, sales, procurement, supplier management, expenses, and an AI assistant that surfaces recommendations and demand forecasts.
 
-BizMind BD is a web and mobile platform designed to support small and
-medium-sized businesses (SMEs) in Bangladesh.
+## Stack
 
-The platform combines business management, inventory, sales, supplier
-management, B2B procurement and business intelligence with an Agentic AI
-layer.
+| Layer    | Tech                  |
+|----------|------------------------|
+| Backend  | NestJS (TypeScript)    |
+| Web      | React + Vite (TypeScript) |
+| Mobile   | Flutter                |
 
----
+## Repo layout
 
-## Problem Statement
+```
+backend/     NestJS API — auth, users, products, inventory, sales, suppliers, procurement, expenses
+frontend/    React + Vite web app
+mobile/      Flutter app
+```
 
-Many SMEs in Bangladesh still depend on manual records, spreadsheets,
-phone calls and fragmented systems to manage their businesses.
-
-This creates problems such as:
-
-- Overstocking
-- Product stockouts
-- Poor supplier selection
-- Difficulty forecasting demand
-- Lack of centralized business information
-- Limited data-driven decision making
-
----
-
-## Proposed Solution
-
-BizMind BD provides a centralized platform where SMEs can manage their
-business operations and receive AI-powered recommendations.
-
-The system will analyze business data, forecast demand, compare suppliers,
-identify business trends and assist with procurement decisions.
-
----
-
-## Key Features
-
-- User Authentication
-- Business Management
-- Product Management
-- Inventory Management
-- Sales Management
-- Customer Management
-- Supplier Management
-- B2B Procurement
-- Purchase Order Management
-- Expense Management
-- Business Intelligence Dashboard
-- Demand Forecasting
-- Supplier Intelligence
-- Agentic AI Business Analysis
-- AI-Assisted Procurement
-- Notifications
-- Android Mobile Application
-
----
-
-## Agentic AI
-
-The project will use an Agentic AI architecture rather than only a
-traditional chatbot.
-
-Planned AI agents include:
-
-1. Agent Orchestrator
-2. Demand Forecasting Agent
-3. Procurement Agent
-4. Supplier Intelligence Agent
-5. Business Analyst Agent
-6. Finance Agent
-
-The agents will be able to analyze business information, use approved
-tools and generate actionable recommendations.
-
-### Example Workflow
-
-Inventory Data
-↓
-Sales History
-↓
-Demand Forecast
-↓
-Required Quantity
-↓
-Supplier Comparison
-↓
-AI Recommendation
-↓
-Owner Approval
-↓
-Purchase Order
-
-Important business actions will remain under human approval.
-
----
-
-## Version Roadmap
-
-### Version 1.0 — Foundation
-
-- Core SME management
-- Inventory
-- Sales
-- Suppliers
-- Procurement
-- Business dashboard
-- Basic Agentic AI
-
-### Version 1.1 — Intelligence
-
-- Improved demand forecasting
-- Anomaly detection
-- Advanced business analytics
-
-### Version 2.0 — B2B Commerce Network
-
-- Multi-business supplier network
-- Quotation comparison
-- Order tracking
-
-### Version 2.1 — Automation
-
-- Smart inventory replenishment
-- Recurring procurement
-- Workflow automation
-
-### Version 3.0 — Business Ecosystem
-
-- Logistics integration
-- Financing partnerships
-- Industry-specific AI agents
-
----
-
-## Technology Stack
-
-### Web
-
-React.js / Next.js
-
-### Mobile
-
-Kotlin / Android
+## Getting started
 
 ### Backend
+```
+cd backend
+npm install --legacy-peer-deps   # see note below
+npm run start:dev
+```
+> `--legacy-peer-deps` is required for now — NestJS 12 is newer than some `@nestjs/*` peer ranges expect, which trips a resolver bug in npm 10.9.x. Safe to drop once dependencies catch up.
 
-Node.js / Express.js
+### Frontend
+```
+cd frontend
+npm install
+npm run dev
+```
 
-### AI/ML
+### Mobile
+```
+cd mobile
+flutter pub get
+flutter run
+```
+This folder is structured to match `flutter create` conventions (`lib/`, `pubspec.yaml`) but was hand-scaffolded — run `flutter create .` in this directory first if you need the platform folders (`android/`, `ios/`) regenerated for your Flutter SDK version.
 
-Python / FastAPI  
-Scikit-learn / XGBoost
+## Modules (Sprint 1 scope)
 
-### Agentic AI
+- **Auth** ✅ implemented — register/login, bcrypt password hashing, JWT issuance, `JwtAuthGuard` + `RolesGuard`, role-based (`owner` / `manager` / `staff`). Verified working end-to-end (register → login → protected `/auth/me`). In-memory user store for now — swap `UsersService` internals for TypeORM/Prisma + Postgres in Sprint 2; the public method signatures won't need to change.
+- **Navigation** ✅ implemented — React Router (web) with `ProtectedRoute` guard; `go_router` + `refreshListenable` (mobile) with the condensed 5-slot bottom nav
+- **Basic UI** — Dashboard shell still placeholder; shared component library not yet built (next up)
 
-LangGraph / LangChain  
-LLM API
+### Try it locally
 
-### Database
+```
+# backend
+cd backend && cp .env.example .env && npm install --legacy-peer-deps && npm run build && node dist/main.js
 
-PostgreSQL
+# in another terminal
+curl -X POST http://localhost:3000/auth/register -H "Content-Type: application/json" \
+  -d '{"businessId":"biz-1","name":"Test User","email":"you@example.com","password":"password123","role":"owner"}'
+```
 
-### Version Control
+For the mobile app against a local backend: Android emulator uses `http://10.0.2.2:3000` automatically (see `AuthService.baseUrl`); override with `flutter run --dart-define=API_BASE_URL=http://<your-ip>:3000` for a physical device.
 
-Git / GitHub
-
----
-
-## Project Development Plan
-
-| Phase | Main Activities |
-|---|---|
-| Week 1 | Initiation, SRS, GitHub setup |
-| Week 2 | UI wireframes, architecture, ERD and flowcharts |
-| Weeks 3–4 | Authentication, navigation and basic UI |
-| Weeks 5–6 | CRUD operations and API integration |
-| Later | Agentic AI, forecasting and business intelligence |
-
----
-
-## Current Status
-
-### Week 1 — Initiation & SRS
-
-Completed / In Progress:
-
-- Project scope defined
-- Objectives defined
-- User roles defined
-- SRS prepared
-- GitHub repository created
-- Contribution guidelines prepared
-- Initial development tasks planned
-
----
-
-## Documentation
-
-The Software Requirements Specification is available in:
-
-`docs/SRS/`
-
----
-
-## AI-Assisted Development
-
-AI tools are being used as development assistants for:
-
-- Requirement brainstorming
-- SRS preparation
-- README generation
-- Task decomposition
-- UI planning
-- Code scaffolding
-- Unit-test generation
-- Documentation
-
-All AI-generated content will be reviewed and validated by the project team.
-
----
-
-## Team Members
-
-Noor Haider Khan (220218) & Md. Mustakiun Alam (220223)
-
----
-
-## Project Status
-
-**Current Phase:** Week 1 — Initiation & SRS
+See `CONTRIBUTING.md` for branch strategy, PR process, and coding conventions.
