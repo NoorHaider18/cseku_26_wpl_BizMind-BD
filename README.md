@@ -61,3 +61,7 @@ BizMind may identify risk, forecast demand and propose an action. It does not au
 ## PostgreSQL deployment
 
 For production, configure `DATABASE_URL` and run `npm run db:migrate` once when importing an existing JSON demo database. The API exposes `GET /api/health` for deployment health checks. Local development may continue using the JSON fallback when `DATABASE_URL` is not set.
+
+## Project Demonstration Video
+
+🎥 [Watch BizMind BD Project Demonstration](https://drive.google.com/drive/folders/1qPI4-e2mNPdoHg2Fhzh3Xbhh3LLr18mD?usp=sharing)
