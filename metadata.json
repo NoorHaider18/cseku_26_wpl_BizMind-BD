@@ -1,0 +1,8 @@
+{
+  "name": "BizMind BD",
+  "description": "BizMind BD - Intelligent Enterprise Resource Planning, Inventory Optimization, Demand Forecasting & Financial Analytics for Bangladeshi & Global Businesses.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
